@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:gravity="bottom">
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/String3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name:"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/userSelect"/>
+            <EditText
+                android:id="@+id/userSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Name"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/String2"/>
+            <TextView
+                android:id="@+id/String2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Location:"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/locationSelect"/>
+            <Spinner
+                android:id="@+id/locationSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/location_array"
+                android:prompt="@string/location_prompt"
+                android:layout_above="@+id/String"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/dislike"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:text="Dislike"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/String"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recommendation:"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/recommendation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:layout_below="@+id/String"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/like"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:text="Like"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

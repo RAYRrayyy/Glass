@@ -3,6 +3,7 @@ package talent.virtualtourskeleton;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,6 +85,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mListener.changeFragment(2);
+            }
+        });
+
+        btn = (Button) view.findViewById(R.id.btn_feedback_test);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                startActivity(intent);
             }
         });
 

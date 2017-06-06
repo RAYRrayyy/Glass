@@ -170,4 +170,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
             ft.commit();
         }
     }
+
+    public void giveFeedback() {
+
+    }
 }
