@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/libs/Vuforia.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="177fc09d70ae5f94117c9ea1a7b3bec42c9d48b4">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/2/Vuforia_e54971afd57bcc5b3e8bad4e8775203cab615076/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/libs/Vuforia.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="177fc09d70ae5f94117c9ea1a7b3bec42c9d48b4">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/2/Vuforia_8c10ff266a41163882e2cf56f760b3afb1c5c72b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9b670e275e9639345edf3817bba622567996ef2c">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_98b124a430bdaa555b236f43f658b80145148d91/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_06d82018463b8c32e44e2a857d32e1ee9178d1e3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_084d17bc959605a782aafb93a6391caebfe65ca1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9fe39b1221f244cecf1976e29312763481b18387">
+        <dex dex="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_96fa4ba627efb6958748a9c1b1f21e1fd9d8b055/classes.dex" />
+    </item>
+
+</items>

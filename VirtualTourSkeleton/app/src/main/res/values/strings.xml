@@ -7,5 +7,29 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_ar_fragment">This will be where the AR camera goes for barcode scanning</string>
+    <string name="hello_ar_fragment">TODO replace with AR camera for barcode scanning</string>
+    <string name="title_activity_gmaps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_hotspots_fragment">TODO replace with hotpsots layout</string>
+    <!--<string name="hello_map_fragment">TODO replace with google map layout</string>-->
+
+    <string name="location_prompt">Choose a location</string>
+    <string-array name="location_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
 </resources>

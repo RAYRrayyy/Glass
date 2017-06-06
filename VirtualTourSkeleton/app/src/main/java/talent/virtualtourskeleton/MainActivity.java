@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +19,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -86,16 +88,16 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = HomeFragment.class;
                 break;
             case R.id.nav_map:
-                fragmentClass = MapActivity.class;
+                fragmentClass = MapFragment.class;
                 break;
             case R.id.nav_hotspots:
-                fragmentClass = HotspotsActivity.class;
+                fragmentClass = HotspotsFragment.class;
                 break;
             case R.id.nav_ar:
                 fragmentClass = ARFragment.class;
                 break;
             default:
-                fragmentClass = ARActivity.class;
+                fragmentClass = HomeFragment.class;
         }
 
         try {
@@ -150,5 +152,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void changeFragment(int id) {
+        Fragment fragment;
+        nvDrawer.getMenu().getItem(id).setChecked(true);
+        if (id == 1) {
+            fragment = new MapFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
+        else if (id == 2) {
+            fragment = new HotspotsFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
+    }
+
+    public void giveFeedback() {
+
     }
 }
