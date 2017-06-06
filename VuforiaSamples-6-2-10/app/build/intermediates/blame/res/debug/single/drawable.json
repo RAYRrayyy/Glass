@@ -84,12 +84,12 @@
         "source": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/res/drawable/comida.jpg"
     },
     {
-        "merged": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/res/merged/debug/drawable/close_button_background.xml",
-        "source": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/res/drawable/close_button_background.xml"
-    },
-    {
         "merged": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/res/merged/debug/drawable/reticle.png",
         "source": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/res/drawable/reticle.png"
+    },
+    {
+        "merged": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/res/merged/debug/drawable/close_button_background.xml",
+        "source": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/res/drawable/close_button_background.xml"
     },
     {
         "merged": "/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/res/merged/debug/drawable/logo.png",

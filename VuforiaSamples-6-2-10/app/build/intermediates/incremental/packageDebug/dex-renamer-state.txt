@@ -1,4 +1,4 @@
-#Tue Jun 06 18:19:13 AEST 2017
+#Tue Jun 06 18:45:51 AEST 2017
 base.0=/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_06d82018463b8c32e44e2a857d32e1ee9178d1e3
 renamed.1=classes.dex
 renamed.0=classes2.dex
