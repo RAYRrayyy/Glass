@@ -7,5 +7,10 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_ar_fragment">This will be where the AR camera goes for barcode scanning</string>
+    <string name="hello_ar_fragment">TODO replace with AR camera for barcode scanning</string>
+    <string name="title_activity_gmaps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_hotspots_fragment">TODO replace with hotpsots layout</string>
+    <string name="hello_map_fragment">TODO replace with google map layout</string>
 </resources>
