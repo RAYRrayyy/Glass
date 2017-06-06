@@ -1,0 +1,40 @@
+Transport
+1. Chancellor's Place (Busstop)
+2. UQ Lakes Busstop
+3. Citycat Stop - Brisbane River
+
+Help
+4. Student Services
+5. UQ Security
+
+Landmarks
+6. Great Court (Court Area)
+7. UQ Lakes Area
+8. Coop Bookshop - Shop, Newsagent, WordSmith Cafe
+9. Schonell Theatre - Pizza Cafe
+10. UQ Centre
+11. GP South - Rover Memorial
+
+Buildings with Libraries
+12. Forgan Smith - Law Library, Merlo's Cafe
+13. BiolSciences Library - Burger Urge, Darwin's Cafe
+14. Hawken Engineering Building - Dorothy Hill Library
+15. Zelman Cowen - Architecture/Music Library
+16. Duhig North - Social Sciences Building/Library
+
+Buildings with Museums
+17. Parnell Building - Physics Museum
+18. Michie Building - Anthropology Museum, RD Milns Antiques Museum
+19. UQ Art Museum, James and Mary Emella Mayne Centre
+20. Chemistry Building - Centre for Organic Photonics and Electronics
+21. Advanced Engineering Building - Nihon Superior Centre for the Manufacture of Electronic Materials, Lakeside Cafe
+
+Food and Drinks
+22. Physiol
+23. Main Refectory - Main Course, Pizza Cafe, Redroom
+
+Recreation/Sporting
+24. Fitness Centre
+25. Aquatic Centre
+26. Tennis Centre/Basketball Courts
+27. Athletics and Playing Fields 
