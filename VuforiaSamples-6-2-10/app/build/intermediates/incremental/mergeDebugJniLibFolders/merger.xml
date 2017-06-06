@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/jniLibs"/><source path="/Users/erickalmeida/Desktop/csseProject/build/lib"/></dataSet><dataSet config="debug"><source path="/Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/debug/jniLibs"/></dataSet></merger>
