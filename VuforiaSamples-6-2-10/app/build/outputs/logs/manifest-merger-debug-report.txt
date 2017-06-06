@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:2:1-190:12
+ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:2:1-125:12
 	package
 		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:3:5-49
 		INJECTED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml
@@ -50,7 +50,7 @@ ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10
 	android:name
 		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:50:22-77
 application
-ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:62:5-188:19
+ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:62:5-123:19
 	android:label
 		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:64:9-41
 	android:launchMode
@@ -102,12 +102,12 @@ ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10
 	android:name
 		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:108:13-56
 activity#com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark
-ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:124:16-130:27
+ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:115:9-121:20
 	android:launchMode
-		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:128:20-51
+		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:119:13-44
 	android:configChanges
-		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:126:20-100
+		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:117:13-93
 	android:theme
-		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:127:20-58
+		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:118:13-51
 	android:name
-		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:125:20-53
+		ADDED from /Users/erickalmeida/Desktop/csseProject/newProj/VuforiaSamples-6-2-10/app/src/main/AndroidManifest.xml:116:13-46
