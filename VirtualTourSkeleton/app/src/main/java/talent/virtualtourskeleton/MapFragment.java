@@ -109,16 +109,12 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        Log.i(LOG_TAG, "API");
+
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
-        Log.i(LOG_TAG, "API set");
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -141,13 +137,6 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         return view;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -162,8 +151,19 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     @Override
     public void onDetach() {
         super.onDetach();
-        mGoogleApiClient.disconnect();
 //        mListener = null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
     /**
@@ -252,5 +252,4 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
     }
-
 }
