@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 
+import com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark;
+import com.vuforia.samples.VuforiaSamples.ui.ActivityList.AboutScreen;
+import com.vuforia.samples.VuforiaSamples.ui.ActivityList.ActivityLauncher;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +96,10 @@ public class HomeFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+//                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+//                startActivity(intent);
+//
+                Intent intent = new Intent(getActivity(), VuMark.class);
                 startActivity(intent);
             }
         });

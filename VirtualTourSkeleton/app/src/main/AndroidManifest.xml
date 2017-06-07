@@ -12,6 +12,11 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.camera" ></uses-feature>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,8 +34,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,10 +44,14 @@
         </activity>
         <activity
             android:name=".FeedbackActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ARActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".ARActivity"></activity>
+
+        <activity android:name="com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:theme="@style/SampleAppsTheme"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>

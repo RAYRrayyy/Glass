@@ -4,9 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.SimpleExpandableListAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -27,7 +38,17 @@ public class HotspotsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-//    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
+
+    private String selectedLoc;
+
+    private final String LIST_CATEGORY = "TYPE";
+    private final String NAME = "NAME";
+
+    List<String> groupList;
+    List<String> childList;
+    Map<String, List<String>> locationCollection;
+    ExpandableListView expListView;
 
     public HotspotsFragment() {
         // Required empty public constructor
@@ -64,45 +85,58 @@ public class HotspotsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hotspots, container, false);
+        View view = inflater.inflate(R.layout.fragment_hotspots, container, false);
+
+        expListView = (ExpandableListView) view.findViewById(R.id.hotspots_list);
+        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+                getActivity(), LocationsClass.createGroupList(), LocationsClass.createCollection());
+        expListView.setAdapter(expListAdapter);
+
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
+                selectedLoc = selected;
+                Toast.makeText(getContext(), selected, Toast.LENGTH_LONG)
+                        .show();
+
+                return true;
+            }
+        });
+
+        Button btn = (Button) view.findViewById(R.id.btn_go);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedLoc != null) {
+                    mListener.changeToMap(selectedLoc);
+                }
+            }
+        });
+
+        return view;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    public interface OnFragmentInteractionListener {
+        void changeToMap(String location);
+    }
 }

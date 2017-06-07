@@ -34,4 +34,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-plus:10.2.4'
     compile 'com.google.android.gms:play-services:10.2.4'
     testCompile 'junit:junit:4.12'
+    compile files('libs/lib.jar')
+    compile files('libs/Vuforia.jar')
 }
