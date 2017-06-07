@@ -24,11 +24,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
         OnMapReadyCallback {
-    //private TextView textLocation;
+    // Google Services variables
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Button bSatellite;
@@ -36,9 +35,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Boolean mapReady = false;
     private GoogleMap gMap;
     private boolean initialCameraSet = true;
+    // Notification variables
     private Toast notifier;
     private TextView notifierText;
     private ImageView notifierImage;
+    private int currentUserLocation = -1; // Default to non existing location
+    private boolean popNotification = true;
+
     // TAG
     // Variables for points of interests
     private ArrayList<Marker> pointsOfInterests;
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Create GoogleApiClient
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -133,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bNormal = (Button) findViewById(R.id.Normal_button);
         // Marker HashSets
         pointsOfInterests = new ArrayList<Marker>();
+        // Initialise Toast
+        createToast();
     }
 
     /*** Activity Life cycle functions ***/
@@ -148,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onPause() {
         super.onPause();
         // Attempt to Connect
-        //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
@@ -210,11 +216,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     " is within 200 meters!\n" + "Go check it out!", Toast.LENGTH_LONG).show();
             pointsOfInterests.get(closestIndex).showInfoWindow();
             gMap.getUiSettings().setMapToolbarEnabled(true);
+            popNotification = true; // Allow notification to trigger when user reaches destination
         } else if(minDistance < 20) {
-            Toast.makeText(this, "You are at " + spotNames[closestIndex]
-                    + "Search for the code for an AR experience!", Toast.LENGTH_LONG).show();
+            if(popNotification && (closestIndex != currentUserLocation)) {
+                notifierImage.setImageResource(R.drawable.download);
+                notifierText.setText("You are at " + spotNames[closestIndex] +
+                        "\n\n Look for the marker shown for a nice AR experience!");
+                notifier.show();
+                popNotification = false;
+                currentUserLocation = closestIndex; // Update user location
+            }
         }
-
     }
 
     // MAP UI CALLBACKS
@@ -243,7 +255,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void setSatellite(View view) {
         if (mapReady) {
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            createToast();
         }
     }
 
@@ -255,14 +266,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     // Customize Toast
+    /* Initialises a toast with a custom view */
     private void createToast(){
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast_layout,
                 (ViewGroup) findViewById(R.id.custom_toast_container));
 
-        notifierText = (TextView) layout.findViewById(R.id.text);
-        text.setText("You are at GPS find the marker shown for some AR experience!\n");
-
+        // Assign notifier variables
+        notifierText = (TextView) layout.findViewById(R.id.arrival_text);
+        notifierImage = (ImageView) layout.findViewById(R.id.location_image);
         notifier = new Toast(getApplicationContext());
         notifier.setDuration(Toast.LENGTH_LONG);
         notifier.setView(layout);
