@@ -27,8 +27,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 
 
 /**
@@ -42,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
         OnMapReadyCallback {
 
+    // Google Services variables
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Button bSatellite;
@@ -49,19 +52,15 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     private Boolean mapReady = false;
     private GoogleMap gMap;
     private boolean initialCameraSet = true;
-
-    private OnFragmentInteractionListener mListener;
+    // Notification variables
+    private Toast notifier;
+    private int currentUserLocation = -1; // Default to non existing location
+    private boolean popNotification = true;
 
     // TAG
+    // Variables for points of interests
+    private ArrayList<Marker> pointsOfInterests;
     private final String LOG_TAG = "VirtualTestApp";
-    // Declare Hotspots name and coordinates for map
-    private final String spotNames[] = {"TP2-Labs", "3010 Rover Memorial", "UQ Lakes", "Regatta"};
-    private final LatLng hotSpots[] = {
-            new LatLng(-27.500097, 153.014526),
-            new LatLng(-27.499996, 153.015170),
-            new LatLng(-27.500231, 153.015988),
-            new LatLng(-27.483230, 152.996814)
-    };
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -134,6 +133,9 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             }
         });
 
+        // Marker HashSets
+        pointsOfInterests = new ArrayList<Marker>();
+
         return view;
     }
 
@@ -161,24 +163,16 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        // Attempt to Connect
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         mGoogleApiClient.disconnect();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
     }
 
     /*** Google Location Services callbacks ***/
@@ -207,23 +201,38 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void onLocationChanged(Location location) {
         Log.i(LOG_TAG, "Location Change");
         Location target = new Location("target");
-        String closePoints = "";
+        String closePoint;
+        int closestIndex = -1;// Default to none
+        float minDistance = 1000; // Default to high value
 
         // Focus camera on initial location
-        if(mapReady == true && initialCameraSet == true) {
-            LatLng initialLocation = new LatLng( location.getLatitude(), location.getLongitude());
+        if (mapReady == true && initialCameraSet == true) {
+            LatLng initialLocation = new LatLng(location.getLatitude(), location.getLongitude());
             gMap.moveCamera(CameraUpdateFactory.newLatLng(initialLocation));
             initialCameraSet = false; // Initial location already displayed
         }
         // Check if spot is close
-        for (int i = 0; i < hotSpots.length; ++i) {
-            target.setLatitude(hotSpots[i].latitude);
-            target.setLongitude(hotSpots[i].longitude);
-            if (location.distanceTo(target) < 1500) {
-                closePoints = closePoints + spotNames[i] + "\n";
+        for (int i = 0; i < LocationsClass.spotsCoordinates.length; ++i) {
+            target.setLatitude(LocationsClass.spotsCoordinates[i].latitude);
+            target.setLongitude(LocationsClass.spotsCoordinates[i].longitude);
+            if (location.distanceTo(target) < minDistance) {
+                closestIndex = i; //Save closes index
+                minDistance = location.distanceTo(target); // update minDistance
             }
         }
-//        Toast.makeText(this, "Close Spots:\n\n" + closePoints, Toast.LENGTH_LONG).show();
+
+        if (minDistance < 200 && minDistance > 20) {
+            Toast.makeText(getActivity(), "Location: " + LocationsClass.spotNames[closestIndex] +
+                    " is within 200 meters!\n" + "Go check it out!", Toast.LENGTH_LONG).show();
+            pointsOfInterests.get(closestIndex).showInfoWindow();
+            gMap.getUiSettings().setMapToolbarEnabled(true);
+            popNotification = true; // Allow notification to trigger when user reaches destination
+        } else if (minDistance < 20) {
+            if (closestIndex != currentUserLocation) {
+//                showArrivalNotification(R.drawable.download, spotNames[closestIndex]);
+                currentUserLocation = closestIndex; // Update user location
+            }
+        }
     }
 
     // MAP UI CALLBACKS
@@ -231,8 +240,15 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void onMapReady(GoogleMap googleMap) {
         mapReady = true;
         gMap = googleMap;
-        for (int i = 0; i < hotSpots.length; ++i) {
-            googleMap.addMarker(new MarkerOptions().position(hotSpots[i]).title(spotNames[i]));
+        populateMap(gMap);
+    }
+
+    private void populateMap(GoogleMap map) {
+        Marker currentMarker;
+        for (int i = 0; i < LocationsClass.spotsCoordinates.length; ++i) {
+            currentMarker =
+                    map.addMarker(new MarkerOptions().position(LocationsClass.spotsCoordinates[i]).title(LocationsClass.spotNames[i]));
+            pointsOfInterests.add(currentMarker);
         }
         gMap.setMyLocationEnabled(true);
     }
@@ -243,6 +259,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void setSatellite(View view) {
         if (mapReady) {
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            showArrivalNotification(R.drawable.download, "HAWKEN");
         }
     }
 
@@ -252,4 +269,14 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
     }
+
+    /*** Creates a dialog showing the user's arrival ***/
+    private void showArrivalNotification(int image, String location) {
+        NotificationFragment notification = new NotificationFragment(getActivity());
+        notification.setNotifierImage(R.drawable.download);
+        notification.setNotifierText("You are at " + location +
+                "\n\n Look for the marker shown for a nice AR experience!");
+        notification.show(getActivity().getFragmentManager(), "pop up");
+    }
+
 }

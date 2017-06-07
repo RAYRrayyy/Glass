@@ -9,6 +9,7 @@
     >
     <ImageView
         android:id="@+id/location_image"
+        android:src="@drawable/download"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"

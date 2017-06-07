@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(onGPS);
             }
+
+//            int net = Settings.Secure.getInt(getContentResolver(), Settings.Secure.);
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }

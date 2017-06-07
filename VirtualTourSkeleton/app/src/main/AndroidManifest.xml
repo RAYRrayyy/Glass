@@ -12,10 +12,11 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature android:name="android.hardware.camera" ></uses-feature>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -45,13 +46,12 @@
         <activity
             android:name=".FeedbackActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ARActivity"></activity>
-
-        <activity android:name="com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark"
+        <activity android:name=".ARActivity" />
+        <activity
+            android:name="com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
-            android:theme="@style/SampleAppsTheme"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask"
+            android:theme="@style/SampleAppsTheme"></activity>
     </application>
 
 </manifest>

@@ -20,16 +20,87 @@ public class LocationsClass {
     private static HashMap<String, LatLng> locations = new HashMap();
 
     // Declare Hotspots name and coordinates for map
-    public static final String spotNames[] = {
+//    public static final String spotNames[] = {
+//            // Transports
+//            "UQ Chancellor's Place",
+//            "UQ Lakes Bus Stop",
+//            "Citycat Stop - Brisbane River",
+//
+//            //Help
+//            "Student Services",
+//            "UQ Security",
+//
+//            //Landmarks
+//            "UQ Great Court",
+//            "UQ Lakes Area",
+//            "Coop Bookshop",
+//            "Schonell Theater - Pizza Cafe",
+//            "UQ Centre",
+//            "GP South - 3010 Rover Memorial",
+//
+//            // Buildings with Libraries
+//            "Forgan Smith - Law Library",
+//            "Biological Science Library",
+//            "Hawken Engineering Library",
+//            "Zelman Cowen - Architecture/Music Library",
+//            "Duhig North - Social Sciences Building Library",
+//
+//            // Buildings with Museums
+//            "Parnell Building - Physics Museum",
+//            "Michie Building - Anthropology Museum",
+//            "UQ Art Museum",
+//            "Chemistry Building - Centre for Organic Photonoics",
+//            "Advanced Engineering Building - Superior Centre for Electronic Material Manufacture",
+//
+//            // Food and Drinks
+//            "Physiol Cafeteria",
+//            "Main Refectory - Main Course, Pizza Cafe, Red Room",
+//
+//            // Recreation and Sporting
+//            "Fitness Centre",
+//            "Aquatic Centre",
+//            "Tennis Centre/Basketball Courts",
+//            "Athletics and Playing Fields"
+//    };
+//
+//    public static final LatLng hotSpots[] = {
+//            new LatLng(-27.495431, 153.012030), // Chancellors
+//            new LatLng(-27.497704, 153.017949), // Lakes Bus Stop
+//            new LatLng(-27.496761, 153.019534), // Ferry Terminal
+//            new LatLng(-27.495431, 153.012030), // Student Services
+//            new LatLng(-27.498879, 153.013759), // UQ Security
+//            new LatLng(-27.497542, 153.013302), // Great Court
+//            new LatLng(-27.500020, 153.016158), // Lakes Area
+//            new LatLng(-27.497968, 153.014384), // Coop Bookshop
+//            new LatLng(-27.497485, 153.016564), // Schonell Theater
+//            new LatLng(-27.495977, 153.016281), // UQ Centre
+//            new LatLng(-27.499996, 153.015170), // GPSouth 3010 Rover Memorial
+//            new LatLng(-27.496752, 153.013700), // Forgan Smith
+//            new LatLng(-27.499996, 153.015170), // BioScience
+//            new LatLng(-27.499999, 153.013676), // Hawken Engineering
+//            new LatLng(-27.499014, 153.014724), // Zelman Cowen
+//            new LatLng(-27.496040, 153.013634), // Duhig North Library
+//            new LatLng(-27.498204, 153.013039), // Parnell
+//            new LatLng(-27.497224, 153.011762), // Michie
+//            new LatLng(-27.496499, 153.012020), // Art Museum
+//            new LatLng(-27.499648, 153.013039), // Chemistry Building
+//            new LatLng(-27.499464, 153.015045), // Advanced Engineering
+//            new LatLng(-27.499075, 153.012261), // Physiol Cafeteria
+//            new LatLng(-27.497405, 153.015882), // Main Refectory
+//            new LatLng(-27.496000, 153.015631), // UQ Fitness Centre
+//            new LatLng(-27.494987, 153.016422), // Aquatic Centre
+//            new LatLng(-27.494567, 153.015145), // Tennis and Basketbal Courts
+//            new LatLng(-27.493431, 153.012188) // Athletics Field
+//    };
+
+    public final static String spotNames[] = {
             // Transports
             "UQ Chancellor's Place",
             "UQ Lakes Bus Stop",
             "Citycat Stop - Brisbane River",
-
             //Help
             "Student Services",
             "UQ Security",
-
             //Landmarks
             "UQ Great Court",
             "UQ Lakes Area",
@@ -37,25 +108,21 @@ public class LocationsClass {
             "Schonell Theater - Pizza Cafe",
             "UQ Centre",
             "GP South - 3010 Rover Memorial",
-
             // Buildings with Libraries
             "Forgan Smith - Law Library",
             "Biological Science Library",
             "Hawken Engineering Library",
             "Zelman Cowen - Architecture/Music Library",
             "Duhig North - Social Sciences Building Library",
-
             // Buildings with Museums
             "Parnell Building - Physics Museum",
             "Michie Building - Anthropology Museum",
             "UQ Art Museum",
             "Chemistry Building - Centre for Organic Photonoics",
             "Advanced Engineering Building - Superior Centre for Electronic Material Manufacture",
-
             // Food and Drinks
             "Physiol Cafeteria",
             "Main Refectory - Main Course, Pizza Cafe, Red Room",
-
             // Recreation and Sporting
             "Fitness Centre",
             "Aquatic Centre",
@@ -63,7 +130,8 @@ public class LocationsClass {
             "Athletics and Playing Fields"
     };
 
-    public static final LatLng hotSpots[] = {
+
+    public static final LatLng spotsCoordinates[] = {
             new LatLng(-27.495431, 153.012030), // Chancellors
             new LatLng(-27.497704, 153.017949), // Lakes Bus Stop
             new LatLng(-27.496761, 153.019534), // Ferry Terminal
@@ -76,7 +144,7 @@ public class LocationsClass {
             new LatLng(-27.495977, 153.016281), // UQ Centre
             new LatLng(-27.499996, 153.015170), // GPSouth 3010 Rover Memorial
             new LatLng(-27.496752, 153.013700), // Forgan Smith
-            new LatLng(-27.499996, 153.015170), // BioScience
+            new LatLng(-27.496990, 153.011403), // BioScience
             new LatLng(-27.499999, 153.013676), // Hawken Engineering
             new LatLng(-27.499014, 153.014724), // Zelman Cowen
             new LatLng(-27.496040, 153.013634), // Duhig North Library

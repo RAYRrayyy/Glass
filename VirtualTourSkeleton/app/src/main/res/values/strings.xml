@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VirtualTourSkeleton</string>
+    <string name="app_name">Virtual Tour of UQ</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -93,4 +93,5 @@
     <string name="menu_button_green">Green</string>
 
     <string name="splash_screen_description">Vuforia Splash</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
