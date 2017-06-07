@@ -1,13 +1,12 @@
 package com.example.jimy_cai.virtual;
 
+
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private boolean initialCameraSet = true;
     // Notification variables
     private Toast notifier;
-    private TextView notifierText;
-    private ImageView notifierImage;
     private int currentUserLocation = -1; // Default to non existing location
     private boolean popNotification = true;
 
@@ -137,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bNormal = (Button) findViewById(R.id.Normal_button);
         // Marker HashSets
         pointsOfInterests = new ArrayList<Marker>();
-        // Initialise Toast
-        createToast();
     }
 
     /*** Activity Life cycle functions ***/
@@ -205,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         for (int i = 0; i < spotsCoordinates.length; ++i) {
             target.setLatitude(spotsCoordinates[i].latitude);
             target.setLongitude(spotsCoordinates[i].longitude);
-            if(location.distanceTo(target) < minDistance) {
+            if (location.distanceTo(target) < minDistance) {
                 closestIndex = i; //Save closes index
                 minDistance = location.distanceTo(target); // update minDistance
             }
@@ -217,13 +212,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             pointsOfInterests.get(closestIndex).showInfoWindow();
             gMap.getUiSettings().setMapToolbarEnabled(true);
             popNotification = true; // Allow notification to trigger when user reaches destination
-        } else if(minDistance < 20) {
-            if(popNotification && (closestIndex != currentUserLocation)) {
-                notifierImage.setImageResource(R.drawable.download);
-                notifierText.setText("You are at " + spotNames[closestIndex] +
-                        "\n\n Look for the marker shown for a nice AR experience!");
-                notifier.show();
-                popNotification = false;
+        } else if (minDistance < 20) {
+            if (closestIndex != currentUserLocation) {
+                showArrivalNotification(R.drawable.download, spotNames[closestIndex]);
                 currentUserLocation = closestIndex; // Update user location
             }
         }
@@ -265,18 +256,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    // Customize Toast
-    /* Initialises a toast with a custom view */
-    private void createToast(){
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_layout,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-
-        // Assign notifier variables
-        notifierText = (TextView) layout.findViewById(R.id.arrival_text);
-        notifierImage = (ImageView) layout.findViewById(R.id.location_image);
-        notifier = new Toast(getApplicationContext());
-        notifier.setDuration(Toast.LENGTH_LONG);
-        notifier.setView(layout);
+    /*** Creates a dialog showing the user's arrival ***/
+    private void showArrivalNotification(int image, String location) {
+        NotificationFragment notification = new NotificationFragment(this);
+        notification.setNotifierImage(R.drawable.download);
+        notification.setNotifierText("You are at " + location +
+                "\n\n Look for the marker shown for a nice AR experience!");
+        notification.show(getFragmentManager(), "pop up");
     }
+
 }
+
+
+
+
