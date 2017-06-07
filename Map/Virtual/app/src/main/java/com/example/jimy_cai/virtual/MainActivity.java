@@ -1,12 +1,15 @@
 package com.example.jimy_cai.virtual;
 
 
+import android.app.DialogFragment;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -117,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Create GoogleApiClient
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bNormal = (Button) findViewById(R.id.Normal_button);
         // Marker HashSets
         pointsOfInterests = new ArrayList<Marker>();
+
     }
 
     /*** Activity Life cycle functions ***/
@@ -214,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             popNotification = true; // Allow notification to trigger when user reaches destination
         } else if (minDistance < 20) {
             if (closestIndex != currentUserLocation) {
-                showArrivalNotification(R.drawable.download, spotNames[closestIndex]);
+//                showArrivalNotification(R.drawable.download, spotNames[closestIndex]);
                 currentUserLocation = closestIndex; // Update user location
             }
         }
@@ -246,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void setSatellite(View view) {
         if (mapReady) {
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            showArrivalNotification(R.drawable.download, "HAWKEN");
         }
     }
 

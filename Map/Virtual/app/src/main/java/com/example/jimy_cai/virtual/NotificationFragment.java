@@ -28,9 +28,7 @@ public class NotificationFragment extends DialogFragment {
                 null);
         // get references to the images
         notifierImage = (ImageView) notifierView.findViewById(R.id.location_image);
-        Log.d("Image", "this first");
         notifierText = (TextView) notifierView.findViewById(R.id.arrival_text);
-        Log.d("Image", "this second");
     }
 
 
@@ -55,17 +53,12 @@ public class NotificationFragment extends DialogFragment {
 
     // Set image in dialog
     public void setNotifierImage(int imageReference){
-
-        Log.d("Image", "No image 2" + imageReference);
-
         notifierImage.setImageResource(imageReference);
     }
 
 
     // Set notifier text in dialog
     public void setNotifierText(String text){
-
         notifierText.setText(text);
-        Log.d("Image", "No text2");
     }
 }
