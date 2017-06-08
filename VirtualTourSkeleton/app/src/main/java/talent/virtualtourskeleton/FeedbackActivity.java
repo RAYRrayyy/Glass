@@ -1,6 +1,10 @@
 package talent.virtualtourskeleton;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,11 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark;
+
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,31 +33,30 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class FeedbackActivity extends AppCompatActivity {
     Button like, dislike;
-    TextView recommendation;
+    TextView recommendation, locationString;
     String user, location, preference;
-    Spinner locationSelect;
     EditText userSelect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_feedback);
 
         like = (Button)findViewById(R.id.like);
         dislike = (Button)findViewById(R.id.dislike);
 
         recommendation = (TextView)findViewById(R.id.recommendation); //Output/Next location recommendation
+        Intent intent = getIntent();
+        location = String.valueOf(intent.getIntExtra("location", 0));
+        locationString = (TextView) findViewById(R.id.location_string);
+        locationString.setText(LocationsClass.spotNames[Integer.parseInt(location)-1]);
 
-        /*Preset using these, in practice these are based on actual device id and gps/barcode location*/
-        locationSelect = (Spinner) findViewById(R.id.locationSelect);
-        locationSelect.setOnItemSelectedListener(new CustomOnItemSelectedListener());
         userSelect = (EditText)findViewById(R.id.userSelect);
-
 
         /*When the Like Button is Hit*/
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                location = String.valueOf(locationSelect.getSelectedItem());
                 user = userSelect.getText().toString();
                 preference = "1"; //Like
                 new SendRequest().execute();
@@ -63,7 +68,6 @@ public class FeedbackActivity extends AppCompatActivity {
         dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                location = String.valueOf(locationSelect.getSelectedItem());
                 user = userSelect.getText().toString();
                 preference = "-1"; //Dislike
                 new SendRequest().execute();
@@ -72,6 +76,17 @@ public class FeedbackActivity extends AppCompatActivity {
         }   );
 
     }
+
+    private void backToMain(String recc) {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("RECOMMENDATIONS", rec);
+//        startActivity(intent);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("reccomendation", recc);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
     private void delay(int Seconds){
         long Time = 0;
         Time = System.currentTimeMillis();
@@ -214,6 +229,7 @@ public class FeedbackActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), result,
             //        Toast.LENGTH_LONG).show();
             recommendation.setText(result);
+            backToMain(result.substring(2, result.length()-2));
         }
     }
 

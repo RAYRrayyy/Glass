@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 /**
@@ -66,7 +67,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "reccomendations";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -86,11 +87,11 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
      * @return A new instance of fragment MapFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    public static MapFragment newInstance(String param1) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
 
         return fragment;
@@ -101,7 +102,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -259,10 +260,18 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         Marker currentMarker;
         for (int i = 0; i < LocationsClass.spotsCoordinates.length; ++i) {
             currentMarker =
-                    map.addMarker(new MarkerOptions().position(LocationsClass.spotsCoordinates[i]).title(LocationsClass.spotNames[i]));
+                    map.addMarker(new MarkerOptions().
+                            position(LocationsClass.spotsCoordinates[i])
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .title(LocationsClass.spotNames[i]));
+
             pointsOfInterests.add(currentMarker);
         }
         gMap.setMyLocationEnabled(true);
+        if (mParam1 != null) {
+            getRecommendations(mParam1);
+        }
     }
 
     // UI interactive functions
@@ -286,11 +295,28 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         NotificationFragment notification = new NotificationFragment(getActivity());
         notification.setNotifierImage(image);
         notification.setNotifierText("You are at " + location +
-                "\n\n Look for the marker shown for a nice AR experience!");
+                "\n\n Look for the marker and switch to AR view in the menu to scan barcodes!");
         notification.show(getActivity().getFragmentManager(), "pop up");
     }
 
     public void setLocation(int index) {
         hotspotIndex = index;
+    }
+
+    public void getRecommendations(String recc) {
+        HashSet<Integer> indexes = new HashSet<Integer>();
+        String recommendations[] = recc.split(",");
+        for(String s : recommendations){
+            indexes.add(Integer.parseInt(s.trim()));
+        }
+        for(int i = 0; i < pointsOfInterests.size(); ++i){
+            if(indexes.contains(i)){
+                pointsOfInterests.get(i).setIcon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            } else {
+                pointsOfInterests.get(i).setIcon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            }
+        }
     }
 }

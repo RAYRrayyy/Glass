@@ -12,15 +12,26 @@ package com.vuforia.samples.VuforiaSamples.app.VuMark;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.hardware.SensorEventListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -29,11 +40,16 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.bluetoothlegatt.BluetoothLeService;
+import com.example.android.bluetoothlegatt.SampleGattAttributes;
 import com.vuforia.CameraDevice;
 import com.vuforia.DataSet;
 import com.vuforia.HINT;
@@ -50,12 +66,20 @@ import com.vuforia.samples.SampleApplication.SampleApplicationSession;
 import com.vuforia.samples.SampleApplication.utils.LoadingDialogHandler;
 import com.vuforia.samples.SampleApplication.utils.SampleApplicationGLView;
 import com.vuforia.samples.SampleApplication.utils.Texture;
+
+import talent.virtualtourskeleton.FeedbackActivity;
+import talent.virtualtourskeleton.MapFragment;
 import talent.virtualtourskeleton.R;
 import com.vuforia.samples.VuforiaSamples.ui.SampleAppMenu.SampleAppMenu;
 import com.vuforia.samples.VuforiaSamples.ui.SampleAppMenu.SampleAppMenuGroup;
 import com.vuforia.samples.VuforiaSamples.ui.SampleAppMenu.SampleAppMenuInterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
+
+import static java.lang.Math.pow;
 
 
 public class VuMark extends Activity implements SampleApplicationControl,
@@ -97,6 +121,26 @@ public class VuMark extends Activity implements SampleApplicationControl,
     private AlertDialog mErrorDialog;
     
     boolean mIsDroidDevice = false;
+    private boolean atLocation = true;
+
+    private static int STATIC_INTEGER_VALUE = 0;
+
+    //ble
+    private BluetoothLeService mBluetoothLeService;
+    private boolean activated = false;
+    private boolean irt_active = false;
+    private String mDeviceAddress;
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
+            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    private boolean mConnected = false;
+    private BluetoothGattCharacteristic mNotifyCharacteristic;
+    private BluetoothGattCharacteristic lux_characteristic;
+    private BluetoothGattCharacteristic irt_characteristic;
+
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+
+    private int locationTag = 0;
     
     
     // Called when the activity first starts or the user navigates back to an
@@ -127,7 +171,7 @@ public class VuMark extends Activity implements SampleApplicationControl,
         LayoutInflater inflater = getLayoutInflater();
         _viewCard = inflater.inflate(R.layout.card, null);
         _viewCard.setVisibility(View.INVISIBLE);
-        LinearLayout cardLayout = (LinearLayout) _viewCard.findViewById(R.id.card_layout);
+        RelativeLayout cardLayout = (RelativeLayout) _viewCard.findViewById(R.id.card_layout);
 
         cardLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -327,23 +371,82 @@ public class VuMark extends Activity implements SampleApplicationControl,
     void writeMessage(final String value) {
         //uqcentre
         if(new String(value).equals("VuMark00")) {
-            //markerType = "UQ Centre";
-            _textDescription.setText("Aqui esta UQ centre.....................................................................................");
-            _instanceImageView.setImageResource(R.drawable.centre);
+            // "Chancellors's place (Busstop)";
+            _textDescription.setText(R.string.gp_south_rover_room);
+            _instanceImageView.setImageResource(R.drawable.rover);
+            locationTag = 11;
         } else if (new String(value).equals("VuMark01")) {
-            //markerType = "Piscina";
-            _textDescription.setText("Y aqui la piscina");
+            // "UQ Lakes busstop";
+            _textDescription.setText(" ");
             _instanceImageView.setImageResource(R.drawable.pool);
         } else if (new String(value).equals("VuMark02")) {
-            //markerType = "Lago";
-            _textDescription.setText("Aqui hay pokemon");
+            // "Citycat stop - Brisbane River";
+            _textDescription.setText(R.string.lakes);
             _instanceImageView.setImageResource(R.drawable.lake);
         } else if (new String(value).equals("VuMark03")) {
-            //markerType = "UComida";
-            _textDescription.setText("Aqui se come");
+            // "Student Services";
+            _textDescription.setText(" ");
             _instanceImageView.setImageResource(R.drawable.comida);
         } else if (new String(value).equals("VuMark04")) {
-            //markerType = "Show girls";
+            // "UQ Security";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark05")) {
+            // "Great Court  (Court Area)";
+            _instanceImageView.setImageResource(R.drawable.uqgreat_court);
+            _textDescription.setText(R.string.great_court);
+            locationTag = 6;
+        } else if (new String(value).equals("VuMark06")) {
+            // "UQ Lakes Area";
+            _textDescription.setText(R.string.lakes);
+            _instanceImageView.setImageResource(R.drawable.uqlakes_area);
+            locationTag = 7;
+        } else if (new String(value).equals("VuMark07")) {
+            // "Coop Bookshop";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark08")) {
+            // "Schonell theater";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark09")) {
+            // "UQ Centre";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark10")) {
+            // "GP South";
+            _textDescription.setText(R.string.gp_south_building);
+            _instanceImageView.setImageResource(R.drawable.gpsouth);
+            locationTag = 11;
+        } else if (new String(value).equals("VuMark11")) {
+            // "Forgan Smith";
+            _textDescription.setText(R.string.forgan_smith);
+            _instanceImageView.setImageResource(R.drawable.forgan_smith);
+            locationTag = 12;
+        } else if (new String(value).equals("VuMark12")) {
+            // "Bioscience Library";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark13")) {
+            // "Hawken Engineering Building";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark14")) {
+            // "Zelman Cowen";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark15")) {
+            // "Duhig North";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark16")) {
+            // "Parnell Building";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark17")) {
+            // "Michie Building";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark18")) {
+            // "UQ Art Museum";
+            _textDescription.setText(R.string.museum);
+            _instanceImageView.setImageResource(R.drawable.uq_art_museum);
+            locationTag = 19;
+        } else if (new String(value).equals("VuMark19")) {
+            // "Chemistry Builsing";
+            _textDescription.setText("Aqui hay putas");
+        } else if (new String(value).equals("VuMark20")) {
+            // "Advance Engineering Building";
             _textDescription.setText("Aqui hay putas");
         }
 
@@ -713,5 +816,188 @@ public class VuMark extends Activity implements SampleApplicationControl,
         }
         
         return result;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (atLocation) {
+            Intent i = new Intent(this,FeedbackActivity.class);
+            i.putExtra("location", locationTag);
+            startActivityForResult(i, STATIC_INTEGER_VALUE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    String newText = data.getStringExtra("reccomendation");
+                    // TODO Update your TextView.
+//                    Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
+                    Log.d("reccomendation", newText);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("reccomendation", newText);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                }
+                break;
+            }
+        }
+    }
+
+    // Code to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+    // Handles various events fired by the Service.
+    // ACTION_GATT_CONNECTED: connected to a GATT server.
+    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+    //                        or notification operations.
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mConnected = true;
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mConnected = false;
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+        }
+    };
+
+    private void displayData(String data) {
+        if (data != null && activated) {
+            activated = false;
+            irt_active = true;
+        } else if (data != null && irt_active) {
+            double amb = extractAmbientTemperature(data.getBytes());
+            double tar = extractTargetTemperature(data.getBytes());
+            irt_active = false;
+            activated = true;
+        }
+    }
+
+    private double extractAmbientTemperature(byte [] v) {
+        int offset = 2;
+        double retVal = shortUnsignedAtOffset(v, offset) / 128.0;
+        return retVal;
+    }
+
+    private double extractTargetTemperature(byte [] v) {
+        Integer twoByteValue = shortSignedAtOffset(v, 0);
+        double Vobj2 = twoByteValue.doubleValue();
+        double retVal = Vobj2 / 128.0;
+        return retVal;
+    }
+
+    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
+    // In this sample, we populate the data structure that is bound to the ExpandableListView
+    // on the UI.
+    private void displayGattServices(List<BluetoothGattService> gattServices) {
+        if (gattServices == null) return;
+        String uuid = null;
+        String unknownServiceString = "unknown service";
+        String unknownCharaString = "unknown characteristic";
+        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
+                = new ArrayList<ArrayList<HashMap<String, String>>>();
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+        // Loops through available GATT Services.
+        for (BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+            uuid = gattService.getUuid().toString();
+            if (SampleGattAttributes.lookup(uuid, unknownServiceString) != unknownServiceString) {
+                currentServiceData.put(
+                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
+                currentServiceData.put(LIST_UUID, uuid);
+                gattServiceData.add(currentServiceData);
+
+                ArrayList<HashMap<String, String>> gattCharacteristicGroupData =
+                        new ArrayList<HashMap<String, String>>();
+                List<BluetoothGattCharacteristic> gattCharacteristics =
+                        gattService.getCharacteristics();
+                ArrayList<BluetoothGattCharacteristic> charas =
+                        new ArrayList<BluetoothGattCharacteristic>();
+
+                // Loops through available Characteristics.
+                for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                    String uuidN = SampleGattAttributes.lookup(gattCharacteristic.getUuid().toString(), "blank");
+                    if (uuidN == "Luxometer Config" || uuidN == "IR Temperature Config") {
+                        gattCharacteristic.setValue(1, 17, 0);
+                        mBluetoothLeService.writeChar(gattCharacteristic);
+                    } else if (uuidN == "Luxometer Data") {
+                        lux_characteristic = gattCharacteristic;
+                        activated = true;
+                    } else if (uuidN == "IR Temperature Data") {
+                        irt_characteristic = gattCharacteristic;
+                        irt_active = false;
+                    }
+                    charas.add(gattCharacteristic);
+                    HashMap<String, String> currentCharaData = new HashMap<String, String>();
+                    currentCharaData.put(LIST_UUID, uuidN);
+                    gattCharacteristicGroupData.add(currentCharaData);
+                }
+                mGattCharacteristics.add(charas);
+                gattCharacteristicData.add(gattCharacteristicGroupData);
+            }
+        }
+    }
+
+    private double luxConvert(final byte [] value) {
+        int mantissa;
+        int exponent;
+        Integer sfloat= shortUnsignedAtOffset(value, 0);
+        mantissa = sfloat & 0x0FFF;
+        exponent = (sfloat >> 12) & 0xFF;
+        double output;
+        double magnitude = pow(2.0f, exponent);
+        output = (mantissa * magnitude)/100.0f;
+        return output;
+    }
+
+    private static Integer shortUnsignedAtOffset(byte[] c, int offset) {
+        Integer lowerByte = (int) c[offset] & 0xFF;
+        Integer upperByte = (int) c[offset+1] & 0xFF;
+        return (upperByte << 8) + lowerByte;
+    }
+    private static Integer shortSignedAtOffset(byte[] c, int offset) {
+        Integer lowerByte = (int) c[offset] & 0xFF;
+        Integer upperByte = (int) c[offset+1]; // // Interpret MSB as signed
+        return (upperByte << 8) + lowerByte;
+    }
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
     }
 }

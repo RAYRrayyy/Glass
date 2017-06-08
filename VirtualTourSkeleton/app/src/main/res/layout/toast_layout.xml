@@ -9,8 +9,8 @@
     >
     <ImageView
         android:id="@+id/location_image"
-        android:layout_width="288dp"
-        android:layout_height="288dp"
+        android:layout_width="236dp"
+        android:layout_height="216dp"
         android:layout_marginRight="8dp"
         />
     <TextView android:id="@+id/arrival_text"

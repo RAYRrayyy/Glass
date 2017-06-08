@@ -92,16 +92,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        btn = (Button) view.findViewById(R.id.btn_feedback_test);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-//                startActivity(intent);
-//
-            }
-        });
-
         return view;
     }
 

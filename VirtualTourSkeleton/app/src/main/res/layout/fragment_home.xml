@@ -20,11 +20,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This app has been designed to assist you in UQ, providing you with a guideless tour of the campus using machine learning to provide recommendations on the next place to visit"
+        android:text="This app has been designed to assist you in UQ, providing you with a guideless tour of the campus using machine learning to provide recommendations on the next place to visit. Around UQ you will find these tags below. Scan them to find out more"
         android:textSize="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/example_tag"/>
 
     <Button
         android:id="@+id/btn_map"
@@ -49,26 +55,5 @@
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/btn_feedback_test"
-        android:layout_width="252dp"
-        android:layout_height="40dp"
-        android:background="@android:color/holo_red_light"
-        android:text="Give Feedback"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This app has been designed to assist you in UQ, providing you with a guideless tour of the campus using machine learning to provide recommendations on the next place to visit"
-        android:textSize="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
 
 </LinearLayout>

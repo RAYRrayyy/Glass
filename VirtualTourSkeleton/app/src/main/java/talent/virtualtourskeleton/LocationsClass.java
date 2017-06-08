@@ -63,7 +63,7 @@ public class LocationsClass {
             new LatLng(-27.495431, 153.012030), // Student Services
             new LatLng(-27.498879, 153.013759), // UQ Security
             new LatLng(-27.497542, 153.013302), // Great Court
-            new LatLng(-27.500020, 153.016158), // Lakes Area
+            new LatLng(-27.498756, 153.015768), // Lakes Area
             new LatLng(-27.497968, 153.014384), // Coop Bookshop
             new LatLng(-27.497485, 153.016564), // Schonell Theater
             new LatLng(-27.495977, 153.016281), // UQ Centre

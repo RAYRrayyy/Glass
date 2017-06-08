@@ -3,20 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="talent.virtualtourskeleton.FeedbackActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="@android:color/white"
+        android:background="#eee"
         android:gravity="bottom">
 
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp">
             <TextView
                 android:id="@+id/String3"
                 android:layout_width="wrap_content"
@@ -30,26 +33,19 @@
                 android:layout_height="wrap_content"
                 android:text="Enter Name"
                 android:layout_centerHorizontal="true"
-                android:layout_above="@+id/String2"/>
+                android:layout_above="@+id/location_string"/>
             <TextView
-                android:id="@+id/String2"
+                android:id="@+id/location_string"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Current Location:"
                 android:layout_centerHorizontal="true"
-                android:layout_above="@+id/locationSelect"/>
-            <Spinner
-                android:id="@+id/locationSelect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/location_array"
-                android:prompt="@string/location_prompt"
-                android:layout_above="@+id/String"
-                android:layout_centerHorizontal="true"/>
+                android:layout_above="@+id/String"/>
             <Button
                 android:id="@+id/dislike"
                 android:layout_width="125dp"
                 android:layout_height="match_parent"
+                android:background="#777"
                 android:text="Dislike"
                 android:layout_alignParentLeft="true" />
 
@@ -71,6 +67,7 @@
                 android:id="@+id/like"
                 android:layout_width="125dp"
                 android:layout_height="match_parent"
+                android:background="@color/wallet_holo_blue_light"
                 android:text="Like"
                 android:layout_alignParentRight="true"/>
 

@@ -158,12 +158,12 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
             GLES20.glGenTextures(1, t.mTextureID, 0);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, t.mTextureID[0]);
             GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+                    GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
             GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+                    GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
             GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA,
-                t.mWidth, t.mHeight, 0, GLES20.GL_RGBA,
-                GLES20.GL_UNSIGNED_BYTE, t.mData);
+                    t.mWidth, t.mHeight, 0, GLES20.GL_RGBA,
+                    GLES20.GL_UNSIGNED_BYTE, t.mData);
         }
 
         shaderProgramID = SampleUtils.createProgramFromShaderSrc(
@@ -173,17 +173,17 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
         vertexHandle = GLES20.glGetAttribLocation(shaderProgramID,
                 "vertexPosition");
         textureCoordHandle = GLES20.glGetAttribLocation(shaderProgramID,
-            "vertexTexCoord");
+                "vertexTexCoord");
         mvpMatrixHandle = GLES20.glGetUniformLocation(shaderProgramID,
                 "modelViewProjectionMatrix");
         texSampler2DHandle = GLES20.glGetUniformLocation(shaderProgramID,
-            "texSampler2D");
+                "texSampler2D");
         calphaHandle = GLES20.glGetUniformLocation(shaderProgramID,
                 "calpha");
 
         // Hide the Loading Dialog
         mActivity.loadingDialogHandler
-            .sendEmptyMessage(LoadingDialogHandler.HIDE_LOADING_DIALOG);
+                .sendEmptyMessage(LoadingDialogHandler.HIDE_LOADING_DIALOG);
 
     }
 
@@ -193,7 +193,7 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
         {
             t0 = System.currentTimeMillis();
         }
-        if (reset) 
+        if (reset)
         {
             return 0.0f;
         }
@@ -269,14 +269,14 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
             TrackableResult result = state.getTrackableResult(tIdx);
             Trackable trackable = result.getTrackable();
             Matrix44F modelViewMatrix_Vuforia = Tool
-                .convertPose2GLMatrix(result.getPose());
+                    .convertPose2GLMatrix(result.getPose());
             float[] modelViewMatrix = modelViewMatrix_Vuforia.getData();
 
             if (result.isOfType(VuMarkTargetResult.getClassType()))
             {
                 VuMarkTargetResult vmtResult = (VuMarkTargetResult) result;
                 VuMarkTarget vmTgt = (VuMarkTarget) vmtResult.getTrackable();
-                
+
                 VuMarkTemplate vmTmp = (VuMarkTemplate) vmTgt.getTemplate();
                 // user data contains the the SVG layer corresponding to the contour
                 // of the VuMark template
@@ -287,21 +287,53 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
 
                 InstanceId instanceId = vmTgt.getInstanceId();
                 boolean isMainVuMark = ((indexVuMarkToDisplay < 0) ||
-                                        (indexVuMarkToDisplay == tIdx));
+                        (indexVuMarkToDisplay == tIdx));
                 gotVuMark = true;
 
                 if (isMainVuMark) {
                     markerValue = instanceIdToValue(instanceId);
                     if(new String(markerValue).equals("VuMark00")) {
-                        markerType = "UQ Centre";
+                        markerType = "GP South - IT Learning Centre";
                     } else if (new String(markerValue).equals("VuMark01")) {
-                        markerType = "Piscina";
+                        markerType = "UQ Lakes Bus Stop";
                     } else if (new String(markerValue).equals("VuMark02")) {
-                        markerType = "Lago";
+                        markerType = "Citycat Stop - Brisbane River";
                     } else if (new String(markerValue).equals("VuMark03")) {
-                        markerType = "UComida";
+                        markerType = "Student Services";
                     } else if (new String(markerValue).equals("VuMark04")) {
-                        markerType = "Show girls";
+                        markerType = "UQ Security";
+                    } else if (new String(markerValue).equals("VuMark05")) {
+                        markerType = "Great Court (Court Area)";
+                    } else if (new String(markerValue).equals("VuMark06")) {
+                        markerType = "UQ Lakes Area";
+                    } else if (new String(markerValue).equals("VuMark07")) {
+                        markerType = "Coop Bookshop - WordSmith Cafe";
+                    } else if (new String(markerValue).equals("VuMark08")) {
+                        markerType = "Schonell Theatre - Pizza Cafe";
+                    } else if (new String(markerValue).equals("VuMark09")) {
+                        markerType = "UQ Centre";
+                    } else if (new String(markerValue).equals("VuMark10")) {
+                        markerType = "GP South - Entrance";
+                    } else if (new String(markerValue).equals("VuMark11")) {
+                        markerType = "Forgan Smith - Law Library, Merlo's Cafe";
+                    } else if (new String(markerValue).equals("VuMark12")) {
+                        markerType = "BiolSciences Library";
+                    } else if (new String(markerValue).equals("VuMark13")) {
+                        markerType = "Hawken Engineering Building";
+                    } else if (new String(markerValue).equals("VuMark14")) {
+                        markerType = "Zelman Cowen - Architecture/Music Library";
+                    } else if (new String(markerValue).equals("VuMark15")) {
+                        markerType = "Social Sciences Building/Library";
+                    } else if (new String(markerValue).equals("VuMark16")) {
+                        markerType = "Parnell Building - Physics Museum";
+                    } else if (new String(markerValue).equals("VuMark17")) {
+                        markerType = "Michie Building";
+                    } else if (new String(markerValue).equals("VuMark18")) {
+                        markerType = "UQ Art Museum";
+                    } else if (new String(markerValue).equals("VuMark19")) {
+                        markerType = "Chemistry Building";
+                    } else if (new String(markerValue).equals("VuMark20")) {
+                        markerType = "Advanced Engineering Building";
                     }
                     //markerType = instanceIdToType(instanceId);
                     Image instanceImage = vmTgt.getInstanceImage();
@@ -318,7 +350,7 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
 
                 // deal with the modelview and projection matrices
                 float[] modelViewProjection = new float[16];
-				
+
                 // Add a translation to recenter the augmentation
                 // on the VuMark center, w.r.t. the origin
                 Vec2F origin = vmTmp.getOrigin();
@@ -394,7 +426,7 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
     private float distanceSquared(Vec2F p1, Vec2F p2)
     {
         return (float) (Math.pow(p1.getData()[0] - p2.getData()[0], 2.0) +
-                        Math.pow(p1.getData()[1] - p2.getData()[1], 2.0));
+                Math.pow(p1.getData()[1] - p2.getData()[1], 2.0));
     }
 
     public void setTextures(Vector<Texture> textures)
@@ -408,10 +440,10 @@ public class VuMarkRenderer implements GLSurfaceView.Renderer, SampleAppRenderer
         {
             case InstanceId.ID_DATA_TYPE.STRING:
                 return "String";
-            
+
             case InstanceId.ID_DATA_TYPE.BYTES:
                 return "Bytes";
-            
+
             case InstanceId.ID_DATA_TYPE.NUMERIC:
                 return "Numeric";
         }

@@ -29,6 +29,50 @@
         <item>15</item>
     </string-array>
 
+    <!--Information Strings-->
+    <string name="great_court">
+    The construction of the Great Court complex was a statement by the Queensland Government and the university that Queensland intended to take tertiary education seriously and that Queensland was an equal of other Australian states.
+        The Great Court is a unique space of historical and cultural importance which has now influenced generations of students and staff through its powerful gravitas and iconic power.
+    </string>
+
+    <!--Information Strings-->
+    <string name="forgan_smith">
+    Construction of the Forgan Smith building on the St. Lucia campus of The University of Queensland began in 1937.
+        It remains the main building on the campus and when it was first built was one of the most impressive in any Australian university.
+        During its century of existence, the university has produced many histories. The largest was produced in its seventy-fifth year, authored by Malcolm Thomis.
+        For its hundredth year, The University of Queensland produced a short, largely pictorial, study by Ben Robertson.
+    </string>
+
+    <string name="gp_south_rover_room">
+        Room where most ITEE students come to work on their assignments.
+        Tutors are here available for help for most programming courses.
+        This room is best known for the 3010 - Rover inident on 2016.
+    </string>
+
+    <string name = "gp_south_building">
+    Built to house primarily Engineering and Information Technology Faculties the building is extensively serviced with over 140 kilometres of data cabling.  Electrical reticulation was carefully designed to minimise electromagnetic interference to data and personnel.
+
+    The building houses the basis of a centralized Chilled Water Precinct to serve this region of the campus, with space and infrastructure to support expanded capacity in the future.
+    An innovative control system feature allows reduction in air conditioning loads and costs where spaces are not constantly occupied.
+    </string>
+    <string name="museum">
+        Originally known as the Darnell Collection, The University of Queensland Art Collection began in the 1940s as the result of a generous financial bequest by John Darnell.
+        While funds were originally applied to endow a special library collection, the University redirected the remainder of these funds towards establishing a Fine Art Library.
+        Dr JV Duhig, Professor RP Cummings and Professor HC Richards, assisted by a group of artists and advisors, within a few years assembled a collection of some 400 works.
+        At the time, The University of Queensland did not have an art museum, and the collection was hung in the main geology lab at the University\'s original home in George Street.
+    </string>
+
+    <string name="lakes">
+        The Freshwater Lake is one of the iconic features of the St Lucia campus.
+        You may have seen it countless times before but take a moment to learn the lessons it can teach us.
+        There is much history from the species that were native to the area, some of which remain and there are new species which originate from beyond Australian shores.
+        The St Lucia lakes are an example of an aquatic ecosystem in action.
+        Modified with the intention of managing stormwater runoff and to provide aesthetic amenity, the lakes are now home to a number of aquatic animals.
+
+    </string>
+
+
+
     <!--Vuforia stuff-->
     <string name="button_start">Start</string>
     <string name="activities_list_title_string">Vuforia Samples</string>

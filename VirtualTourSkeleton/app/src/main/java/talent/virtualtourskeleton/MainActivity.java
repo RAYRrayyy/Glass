@@ -1,5 +1,6 @@
 package talent.virtualtourskeleton;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
     private final static int LOCATION = 1;
     private final static int INTERNET = 2;
+    private final static int FROM_AR = 0;
 
     private Class lastFragClass = HomeFragment.class;
 
@@ -112,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 break;
             case R.id.nav_ar:
                 fragment = null;
-                Intent intent = new Intent(this, VuMark.class);
-                startActivity(intent);
+                Intent i = new Intent(this,VuMark.class);
+                startActivityForResult(i, FROM_AR);
                 break;
         }
 
@@ -242,6 +244,33 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    String recc = data.getStringExtra("reccomendation");
+                    // TODO Update your TextView.
+                    Log.d("recommendation", recc);
+                    Toast.makeText(this, recc, Toast.LENGTH_SHORT).show();
+
+                    MapFragment fragment = MapFragment.newInstance(recc);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.content_frame, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+                break;
+            }
+            case (1) : {
+                Log.d("recommendation", "eh");
+                break;
+            }
+
         }
     }
 }
