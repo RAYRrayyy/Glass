@@ -90,7 +90,7 @@ def update_recommendation(prediction_models, temp, num, worksheet):
             #checks if ML Model for location thinks whether user will like or not#
             if predict_user(prediction_models,location,query)[0] == 1.0: 
                 #Adds the location to the list#
-                recommendation_list.append(location)
+                recommendation_list.append(location+1)
 
     #Update Recommendation#
     worksheet.update_cell(num+2,31,recommendation_list)
