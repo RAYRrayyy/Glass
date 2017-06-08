@@ -278,5 +278,4 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                 "\n\n Look for the marker shown for a nice AR experience!");
         notification.show(getActivity().getFragmentManager(), "pop up");
     }
-
 }

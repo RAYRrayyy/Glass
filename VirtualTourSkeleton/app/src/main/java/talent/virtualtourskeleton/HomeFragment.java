@@ -99,8 +99,6 @@ public class HomeFragment extends Fragment {
 //                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
 //                startActivity(intent);
 //
-                Intent intent = new Intent(getActivity(), VuMark.class);
-                startActivity(intent);
             }
         });
 

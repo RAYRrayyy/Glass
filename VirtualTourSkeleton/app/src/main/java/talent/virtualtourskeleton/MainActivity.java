@@ -25,6 +25,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark;
+
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, HotspotsFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
@@ -108,13 +110,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 fragment = new HotspotsFragment();
                 break;
             case R.id.nav_ar:
-                fragment = new ARFragment();
+                fragment = null;
+                Intent intent = new Intent(this, VuMark.class);
+                startActivity(intent);
                 break;
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+        }
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
