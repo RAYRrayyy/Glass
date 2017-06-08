@@ -166,13 +166,17 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void onPause() {
         super.onPause();
         // Attempt to Connect
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     /*** Google Location Services callbacks ***/

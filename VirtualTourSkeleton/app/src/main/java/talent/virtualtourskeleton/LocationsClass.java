@@ -186,17 +186,40 @@ public class LocationsClass {
         List<String> childList = new ArrayList<String>();
 
         // preparing laptops collection(child)
-        String[] transportLocations = { "Chancellor's Place (Busstop)", "UQ Lakes Busstop",
-                "Citycat Stop - Brisbane River" };
-        String[] helpLocations = { "Student Services", "UQ Security" };
-        String[] landmarkLocations = { "Great Court (Court Area)", "UQ Lakes Area",
-                "Coop Bookshop - Shop, Newsagent, WordSmith Cafe", "Schonell Theatre - Pizza Cafe",
-                "UQ Centre", "GP South - Rover Memorial" };
-        String[] libraryLocations = { "VAIO E Series", "VAIO Z Series",
-                "VAIO S Series", "VAIO YB Series" };
-        String[] museumLocations = { "Inspiron", "Vostro", "XPS" };
-        String[] beverageLocations = { "Physiol", "Main Refectory - Main Course, Pizza Cafe, Redroom" };
-        String[] recreationLocations = { "NP Series", "Series 5", "SF Series" };
+        String[] transportLocations = new String[3];
+        String[] helpLocations = new String[2];
+        String[] landmarkLocations = new String[6];
+        String[] libraryLocations = new String[5];
+        String[] museumLocations = new String[5];
+        String[] beverageLocations = new String[2];
+        String[] recreationLocations = new String[4];
+
+        for (int i = 0; i < spotNames.length; i++) {
+            if (i < 3) {
+                transportLocations[i] = spotNames[i];
+            } else if (i < 5) {
+                helpLocations[i-3] = spotNames[i];
+            } else if (i < 11) {
+                landmarkLocations[i-5] = spotNames[i];
+            } else if (i < 16) {
+                libraryLocations[i-11] = spotNames[i];
+            } else if (i < 21) {
+                museumLocations[i-16] = spotNames[i];
+            } else if (i < 23) {
+                beverageLocations[i-21] = spotNames[i];
+            } else if (i < 27) {
+                recreationLocations[i-23] = spotNames[i];
+            }
+        }
+
+//        String[] landmarkLocations = { "Great Court (Court Area)", "UQ Lakes Area",
+//                "Coop Bookshop - Shop, Newsagent, WordSmith Cafe", "Schonell Theatre - Pizza Cafe",
+//                "UQ Centre", "GP South - Rover Memorial" };
+//        String[] libraryLocations = { "VAIO E Series", "VAIO Z Series",
+//                "VAIO S Series", "VAIO YB Series" };
+//        String[] museumLocations = { "Inspiron", "Vostro", "XPS" };
+//        String[] beverageLocations = { "Physiol", "Main Refectory - Main Course, Pizza Cafe, Redroom" };
+//        String[] recreationLocations = { "NP Series", "Series 5", "SF Series" };
 
         locationCollection = new LinkedHashMap<String, List<String>>();
 
