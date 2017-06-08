@@ -1,12 +1,17 @@
 package talent.virtualtourskeleton;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, HotspotsFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -29,17 +34,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
     private ActionBarDrawerToggle drawerToggle;
 
+    private final static int LOCATION = 1;
+    private final static int INTERNET = 2;
+
+    private Class lastFragClass = HomeFragment.class;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Set a Toolbar to replace the ActionBar.
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Find our navigation view
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
@@ -56,16 +59,28 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
 
-        Class fragmentClass = HomeFragment.class;
-        Fragment fragment = null;
+        Fragment fragment = new HomeFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
+            int off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+            if (off == 0) {
+                Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(onGPS);
+            }
+
+//            int net = Settings.Secure.getInt(getContentResolver(), Settings.Secure.);
+        } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
+        ActivityCompat.requestPermissions(this,
+                new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                LOCATION);
+        ActivityCompat.requestPermissions(this,
+                new String[]{"android.permission.INTERNET"},
+                INTERNET);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -82,33 +97,24 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
-        Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_home:
-                fragmentClass = HomeFragment.class;
+                fragment = new HomeFragment();
                 break;
             case R.id.nav_map:
-                fragmentClass = MapFragment.class;
+                fragment = new MapFragment();
                 break;
             case R.id.nav_hotspots:
-                fragmentClass = HotspotsFragment.class;
+                fragment = new HotspotsFragment();
                 break;
             case R.id.nav_ar:
-                fragmentClass = ARFragment.class;
+                fragment = new ARFragment();
                 break;
-            default:
-                fragmentClass = HomeFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -160,18 +166,62 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         if (id == 1) {
             fragment = new MapFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+            ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
         }
         else if (id == 2) {
             fragment = new HotspotsFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+            ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
         }
     }
 
-    public void giveFeedback() {
+    public void changeToMap(String location) {
+        // TODO change constructor for arguments
+        Log.d("hello", location);
+        Fragment fragment = new MapFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "Could not find location", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case INTERNET: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "Could not find internet", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

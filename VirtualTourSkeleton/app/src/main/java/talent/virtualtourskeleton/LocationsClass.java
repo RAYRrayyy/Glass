@@ -1,0 +1,242 @@
+package talent.virtualtourskeleton;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.android.gms.maps.model.LatLng;
+
+/**
+ * A class to contain all the relevant location data
+ *
+ * Created by Talent on 6/06/2017
+ */
+
+public class LocationsClass {
+
+    private static HashMap<String, LatLng> locations = new HashMap();
+
+    // Declare Hotspots name and coordinates for map
+//    public static final String spotNames[] = {
+//            // Transports
+//            "UQ Chancellor's Place",
+//            "UQ Lakes Bus Stop",
+//            "Citycat Stop - Brisbane River",
+//
+//            //Help
+//            "Student Services",
+//            "UQ Security",
+//
+//            //Landmarks
+//            "UQ Great Court",
+//            "UQ Lakes Area",
+//            "Coop Bookshop",
+//            "Schonell Theater - Pizza Cafe",
+//            "UQ Centre",
+//            "GP South - 3010 Rover Memorial",
+//
+//            // Buildings with Libraries
+//            "Forgan Smith - Law Library",
+//            "Biological Science Library",
+//            "Hawken Engineering Library",
+//            "Zelman Cowen - Architecture/Music Library",
+//            "Duhig North - Social Sciences Building Library",
+//
+//            // Buildings with Museums
+//            "Parnell Building - Physics Museum",
+//            "Michie Building - Anthropology Museum",
+//            "UQ Art Museum",
+//            "Chemistry Building - Centre for Organic Photonoics",
+//            "Advanced Engineering Building - Superior Centre for Electronic Material Manufacture",
+//
+//            // Food and Drinks
+//            "Physiol Cafeteria",
+//            "Main Refectory - Main Course, Pizza Cafe, Red Room",
+//
+//            // Recreation and Sporting
+//            "Fitness Centre",
+//            "Aquatic Centre",
+//            "Tennis Centre/Basketball Courts",
+//            "Athletics and Playing Fields"
+//    };
+//
+//    public static final LatLng hotSpots[] = {
+//            new LatLng(-27.495431, 153.012030), // Chancellors
+//            new LatLng(-27.497704, 153.017949), // Lakes Bus Stop
+//            new LatLng(-27.496761, 153.019534), // Ferry Terminal
+//            new LatLng(-27.495431, 153.012030), // Student Services
+//            new LatLng(-27.498879, 153.013759), // UQ Security
+//            new LatLng(-27.497542, 153.013302), // Great Court
+//            new LatLng(-27.500020, 153.016158), // Lakes Area
+//            new LatLng(-27.497968, 153.014384), // Coop Bookshop
+//            new LatLng(-27.497485, 153.016564), // Schonell Theater
+//            new LatLng(-27.495977, 153.016281), // UQ Centre
+//            new LatLng(-27.499996, 153.015170), // GPSouth 3010 Rover Memorial
+//            new LatLng(-27.496752, 153.013700), // Forgan Smith
+//            new LatLng(-27.499996, 153.015170), // BioScience
+//            new LatLng(-27.499999, 153.013676), // Hawken Engineering
+//            new LatLng(-27.499014, 153.014724), // Zelman Cowen
+//            new LatLng(-27.496040, 153.013634), // Duhig North Library
+//            new LatLng(-27.498204, 153.013039), // Parnell
+//            new LatLng(-27.497224, 153.011762), // Michie
+//            new LatLng(-27.496499, 153.012020), // Art Museum
+//            new LatLng(-27.499648, 153.013039), // Chemistry Building
+//            new LatLng(-27.499464, 153.015045), // Advanced Engineering
+//            new LatLng(-27.499075, 153.012261), // Physiol Cafeteria
+//            new LatLng(-27.497405, 153.015882), // Main Refectory
+//            new LatLng(-27.496000, 153.015631), // UQ Fitness Centre
+//            new LatLng(-27.494987, 153.016422), // Aquatic Centre
+//            new LatLng(-27.494567, 153.015145), // Tennis and Basketbal Courts
+//            new LatLng(-27.493431, 153.012188) // Athletics Field
+//    };
+
+    public final static String spotNames[] = {
+            // Transports
+            "UQ Chancellor's Place",
+            "UQ Lakes Bus Stop",
+            "Citycat Stop - Brisbane River",
+            //Help
+            "Student Services",
+            "UQ Security",
+            //Landmarks
+            "UQ Great Court",
+            "UQ Lakes Area",
+            "Coop Bookshop",
+            "Schonell Theater - Pizza Cafe",
+            "UQ Centre",
+            "GP South - 3010 Rover Memorial",
+            // Buildings with Libraries
+            "Forgan Smith - Law Library",
+            "Biological Science Library",
+            "Hawken Engineering Library",
+            "Zelman Cowen - Architecture/Music Library",
+            "Duhig North - Social Sciences Building Library",
+            // Buildings with Museums
+            "Parnell Building - Physics Museum",
+            "Michie Building - Anthropology Museum",
+            "UQ Art Museum",
+            "Chemistry Building - Centre for Organic Photonoics",
+            "Advanced Engineering Building - Superior Centre for Electronic Material Manufacture",
+            // Food and Drinks
+            "Physiol Cafeteria",
+            "Main Refectory - Main Course, Pizza Cafe, Red Room",
+            // Recreation and Sporting
+            "Fitness Centre",
+            "Aquatic Centre",
+            "Tennis Centre/Basketball Courts",
+            "Athletics and Playing Fields"
+    };
+
+
+    public static final LatLng spotsCoordinates[] = {
+            new LatLng(-27.495431, 153.012030), // Chancellors
+            new LatLng(-27.497704, 153.017949), // Lakes Bus Stop
+            new LatLng(-27.496761, 153.019534), // Ferry Terminal
+            new LatLng(-27.495431, 153.012030), // Student Services
+            new LatLng(-27.498879, 153.013759), // UQ Security
+            new LatLng(-27.497542, 153.013302), // Great Court
+            new LatLng(-27.500020, 153.016158), // Lakes Area
+            new LatLng(-27.497968, 153.014384), // Coop Bookshop
+            new LatLng(-27.497485, 153.016564), // Schonell Theater
+            new LatLng(-27.495977, 153.016281), // UQ Centre
+            new LatLng(-27.499996, 153.015170), // GPSouth 3010 Rover Memorial
+            new LatLng(-27.496752, 153.013700), // Forgan Smith
+            new LatLng(-27.496990, 153.011403), // BioScience
+            new LatLng(-27.499999, 153.013676), // Hawken Engineering
+            new LatLng(-27.499014, 153.014724), // Zelman Cowen
+            new LatLng(-27.496040, 153.013634), // Duhig North Library
+            new LatLng(-27.498204, 153.013039), // Parnell
+            new LatLng(-27.497224, 153.011762), // Michie
+            new LatLng(-27.496499, 153.012020), // Art Museum
+            new LatLng(-27.499648, 153.013039), // Chemistry Building
+            new LatLng(-27.499464, 153.015045), // Advanced Engineering
+            new LatLng(-27.499075, 153.012261), // Physiol Cafeteria
+            new LatLng(-27.497405, 153.015882), // Main Refectory
+            new LatLng(-27.496000, 153.015631), // UQ Fitness Centre
+            new LatLng(-27.494987, 153.016422), // Aquatic Centre
+            new LatLng(-27.494567, 153.015145), // Tennis and Basketbal Courts
+            new LatLng(-27.493431, 153.012188) // Athletics Field
+    };
+
+    static {
+
+        locations.put("TP2-Labs", new LatLng(-27.500097, 153.014526));
+        locations.put("3010 Rover Memorial", new LatLng(-27.499996, 153.015170));
+        locations.put("UQ Lakes", new LatLng(-27.500231, 153.015988));
+        locations.put("Regatta", new LatLng(-27.483230, 152.996814));
+    }
+
+    public static List<String> createGroupList() {
+        List<String> groupList = new ArrayList<String>();
+        groupList.add("Transport");
+        groupList.add("Help");
+        groupList.add("Landmarks");
+        groupList.add("Libraries");
+        groupList.add("Museums");
+        groupList.add("Beverages");
+        groupList.add("Recreation/Sporting");
+        return groupList;
+    }
+
+    public static Map<String, List<String>> createCollection() {
+        Map<String, List<String>> locationCollection;
+        List<String> childList = new ArrayList<String>();
+
+        // preparing laptops collection(child)
+        String[] transportLocations = { "Chancellor's Place (Busstop)", "UQ Lakes Busstop",
+                "Citycat Stop - Brisbane River" };
+        String[] helpLocations = { "Student Services", "UQ Security" };
+        String[] landmarkLocations = { "Great Court (Court Area)", "UQ Lakes Area",
+                "Coop Bookshop - Shop, Newsagent, WordSmith Cafe", "Schonell Theatre - Pizza Cafe",
+                "UQ Centre", "GP South - Rover Memorial" };
+        String[] libraryLocations = { "VAIO E Series", "VAIO Z Series",
+                "VAIO S Series", "VAIO YB Series" };
+        String[] museumLocations = { "Inspiron", "Vostro", "XPS" };
+        String[] beverageLocations = { "Physiol", "Main Refectory - Main Course, Pizza Cafe, Redroom" };
+        String[] recreationLocations = { "NP Series", "Series 5", "SF Series" };
+
+        locationCollection = new LinkedHashMap<String, List<String>>();
+
+        for (String location : createGroupList()) {
+            if (location.equals("Transport"))
+                childList = loadChild(transportLocations);
+            else if (location.equals("Help"))
+                childList = loadChild(helpLocations);
+            else if (location.equals("Landmarks"))
+                childList = loadChild(landmarkLocations);
+            else if (location.equals("Libraries"))
+                childList = loadChild(libraryLocations);
+            else if (location.equals("Museums"))
+                childList = loadChild(museumLocations);
+            else if (location.equals("Beverages"))
+                childList = loadChild(beverageLocations);
+            else if (location.equals("Recreation/Sporting"))
+                childList = loadChild(recreationLocations);
+
+            locationCollection.put(location, childList);
+        }
+        return locationCollection;
+    }
+
+    private static List<String> loadChild(String[] locationModels) {
+        List<String> childList = new ArrayList<String>();
+        for (String model : locationModels)
+            childList.add(model);
+        return childList;
+    }
+
+    public static int numLocations() {
+        return locations.size();
+    }
+
+    public static Iterator getIterator() {
+        return locations.entrySet().iterator();
+    }
+
+    public static HashMap<String, LatLng> getLocations() {
+        return locations;
+    }
+}
