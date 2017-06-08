@@ -56,7 +56,6 @@ public class LocationsClass {
             "Athletics and Playing Fields"
     };
 
-
     public static final LatLng spotsCoordinates[] = {
             new LatLng(-27.495431, 153.012030), // Chancellors
             new LatLng(-27.497704, 153.017949), // Lakes Bus Stop

@@ -1,6 +1,7 @@
 package talent.virtualtourskeleton;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 
@@ -49,6 +51,8 @@ public class HotspotsFragment extends Fragment {
     List<String> childList;
     Map<String, List<String>> locationCollection;
     ExpandableListView expListView;
+
+    ImageView helpImage;
 
     public HotspotsFragment() {
         // Required empty public constructor
@@ -99,8 +103,18 @@ public class HotspotsFragment extends Fragment {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
                 selectedLoc = selected;
-                Toast.makeText(getContext(), selected, Toast.LENGTH_LONG)
-                        .show();
+                int index = -1;
+                for (int i = 0; i < LocationsClass.spotNames.length; i++) {
+                    if (LocationsClass.spotNames[i] == selected) {
+                        index = i;
+                        break;
+                    }
+                }
+                int res = getResources().getIdentifier("loc_" + index, "drawable", getActivity().getPackageName());
+                helpImage.setImageResource(res);
+                mListener.changeImage(selected);
+//                Toast.makeText(getContext(), selected, Toast.LENGTH_LONG)
+//                        .show();
 
                 return true;
             }
@@ -115,6 +129,8 @@ public class HotspotsFragment extends Fragment {
                 }
             }
         });
+
+        helpImage = (ImageView) view.findViewById(R.id.help_image);
 
         return view;
     }
@@ -138,5 +154,6 @@ public class HotspotsFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void changeToMap(String location);
+        void changeImage(String location);
     }
 }

@@ -57,6 +57,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     private int currentUserLocation = -1; // Default to non existing location
     private boolean popNotification = true;
 
+    private int hotspotIndex = -1;
+
     // TAG
     // Variables for points of interests
     private ArrayList<Marker> pointsOfInterests;
@@ -228,14 +230,20 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         if (minDistance < 200 && minDistance > 20) {
             Toast.makeText(getActivity(), "Location: " + LocationsClass.spotNames[closestIndex] +
                     " is within 200 meters!\n" + "Go check it out!", Toast.LENGTH_LONG).show();
-            pointsOfInterests.get(closestIndex).showInfoWindow();
-            gMap.getUiSettings().setMapToolbarEnabled(true);
+//            pointsOfInterests.get(closestIndex).showInfoWindow();
+//            gMap.getUiSettings().setMapToolbarEnabled(true);
             popNotification = true; // Allow notification to trigger when user reaches destination
         } else if (minDistance < 20) {
             if (closestIndex != currentUserLocation) {
-//                showArrivalNotification(R.drawable.download, spotNames[closestIndex]);
+                int locationId = getResources().getIdentifier("loc_"+closestIndex, "drawable", getActivity().getPackageName());
+                showArrivalNotification(locationId, LocationsClass.spotNames[closestIndex]);
                 currentUserLocation = closestIndex; // Update user location
             }
+        }
+
+        if (hotspotIndex != -1) {
+            pointsOfInterests.get(hotspotIndex).showInfoWindow();
+            gMap.getUiSettings().setMapToolbarEnabled(true);
         }
     }
 
@@ -263,7 +271,6 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void setSatellite(View view) {
         if (mapReady) {
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            showArrivalNotification(R.drawable.download, "HAWKEN");
         }
     }
 
@@ -277,9 +284,13 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     /*** Creates a dialog showing the user's arrival ***/
     private void showArrivalNotification(int image, String location) {
         NotificationFragment notification = new NotificationFragment(getActivity());
-        notification.setNotifierImage(R.drawable.download);
+        notification.setNotifierImage(image);
         notification.setNotifierText("You are at " + location +
                 "\n\n Look for the marker shown for a nice AR experience!");
         notification.show(getActivity().getFragmentManager(), "pop up");
+    }
+
+    public void setLocation(int index) {
+        hotspotIndex = index;
     }
 }

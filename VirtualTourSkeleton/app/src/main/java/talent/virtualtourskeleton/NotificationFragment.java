@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark;
 
 /**
  * Created by Jimy on 7/06/2017.
@@ -48,6 +51,13 @@ public class NotificationFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dismiss();
+                    }
+                })
+                .setNeutralButton("AR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getActivity(), VuMark.class);
+                        startActivity(intent);
                     }
                 });
 

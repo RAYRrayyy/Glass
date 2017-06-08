@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.vuforia.samples.VuforiaSamples.app.VuMark.VuMark;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, HotspotsFragment.OnFragmentInteractionListener {
@@ -185,9 +186,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     public void changeToMap(String location) {
         // TODO change constructor for arguments
         Log.d("hello", location);
+        int index = -1;
+        for (int i = 0; i < LocationsClass.spotNames.length; i++) {
+            if (location == LocationsClass.spotNames[i]) {
+                index = i;
+                break;
+            }
+        }
         Fragment fragment = new MapFragment();
+        ((MapFragment) fragment).setLocation(index);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+    }
+
+    public void changeImage(String location) {
+
     }
 
     @Override
