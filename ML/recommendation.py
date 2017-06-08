@@ -5,13 +5,22 @@ from numpy import *
 from oauth2client.service_account import ServiceAccountCredentials
 from keras.models import Sequential
 from keras.layers import Dense
-
-#RECOMMENDATIONS#
-#Class for learning models, different for each location#
+scope = ['https://spreadsheets.google.com/feeds']
+""" Class which is used for building of Neural Networks
+    Remove instances where user has not visited a location (0)
+    Reduces possible Bias in training the Neural Networks
+"""
 class location_learner:
     def __init__(self, location_number):
         self.location_number = location_number
 
+    """ Processes Data before training Neural Networks
+        Remove instances where user has not visited a location (0)
+        Reduces possible Bias in training the Neural Networks
+        Inputs: data : Numpy matrix containing all user preference
+        location : The model's location, an int from 0 to 26
+        Output: The processed data
+    """
     def process_data(self,data,location):
         self.col = []
         #Removes data where the current location wasn't visited, to minimize bias#
@@ -20,7 +29,11 @@ class location_learner:
                 self.col.append(i)
         return copy(data[self.col,:])
 
-    #BUILD A NEURAL NETWORK#
+    """ Builds the Neural Network
+        Inputs: X - User Preference Data for all locations except for the current model location
+                Y - User Preference Data for the current model location
+        Output: The built neural network
+    """
     def build(self,X,Y):
         # fix random seed for reproducibility
         random.seed(7)
@@ -32,10 +45,14 @@ class location_learner:
         # Compile model
         self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         # Fit the model
-        self.model.fit(X, Y, epochs=100, batch_size=10)
+        self.model.fit(X, Y, epochs=150, batch_size=10)
         # evaluate the model
         return self.model
 
+    """ Builds and Tests the Neural Network
+        Inputs: data - The whole numpy matrix from the database
+        Output: The final prediction neural network
+    """   
     def train_model(self, data):
         self.data = data
         self.temp = self.process_data(self.data,self.location_number-1)
@@ -46,19 +63,11 @@ class location_learner:
         self.prediction_model = self.model
         print("\n%s: %.2f%%" % (self.model.metrics_names[1], self.scores[1]*100))
         return self.model
-
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/sheets.googleapis.com-python-quickstart.json
-scope = ['https://spreadsheets.google.com/feeds']
-
-def process_data(self,data,location):
-    self.col = []
-    #Removes data where the current location wasn't visited, to minimize bias#
-    for i in range(shape(data)[0]):
-        if data[i,location] != 0:
-            self.col.append(i)
-    return copy(data[self.col,:])
-
+"""Processes row data for prediction querying data
+   Inputs: row - Current User's Preferences
+           location - location to query
+    Output: returns the query data for prediction
+"""
 def build_query(row,location):
     tmp = ones((1,26),int)
     index = 0
@@ -67,19 +76,28 @@ def build_query(row,location):
             tmp[0,index] = row[j]
             index += 1
     return tmp
-
-#Given data (user's past locations) and current location#
+"""Executes the prediction for the location in question
+   Inputs: prediction_models - Array of neural networks
+           location - location to query
+           user_data - the query data/current user's preferences
+   Output: returns the result of the prediction 1.0 or -1.0
+"""
 def predict_user(prediction_models,location,user_data):
     predictions = prediction_models[location].predict(user_data)
     # round predictions
     rounded = [round(x[0]) for x in predictions]
     return rounded
-
+"""Retrieves suggested locations using the Neural Networks and updates database
+   Inputs: prediction_models - Array of neural networks
+           temp - entire Numpy matrix with user preference data
+           num - the user that has requested an update
+           worksheet - The google sheet database
+"""
 def update_recommendation(prediction_models, temp, num, worksheet):
     #Model to redetermine the recommendation#
-    row = temp.astype(int) #convert all elements to integers
+    row = temp[1:-2]
+    row = row.astype(int)
     current_location = row[-2] - 1
-    row = row[1:-2]
     recommendation_list = []
     #Query all 27 location#
     for location in range(0,26):
@@ -90,14 +108,17 @@ def update_recommendation(prediction_models, temp, num, worksheet):
             #checks if ML Model for location thinks whether user will like or not#
             if predict_user(prediction_models,location,query)[0] == 1.0: 
                 #Adds the location to the list#
-                recommendation_list.append(location+1)
+                recommendation_list.append(location)
 
     #Update Recommendation#
     worksheet.update_cell(num+2,31,recommendation_list)
     #clear the request#
     worksheet.update_cell(num+2,30,'0')
     worksheet.update_acell('AF1','0')
-
+"""Initiates the Neural Networks for all locations
+   Inputs: worksheet - The google sheet database
+   Output: The array of Prediction Models for all locations
+"""
 def init_models(worksheet):
     model_array = []
     prediction_models = []
@@ -195,7 +216,10 @@ def init_models(worksheet):
     for k in range(0,26):
         prediction_models.append(model_array[k].train_model(temp))
     return prediction_models
-
+"""Retrieves and stores data from Database
+   Inputs: worksheet - The google sheet database
+   Output: The numpy matrix containing the user preference data from database
+"""
 def get_data(worksheet):
     #`Retrieves the data from the database#
     temp = asarray(worksheet.get_all_values())
@@ -204,10 +228,9 @@ def get_data(worksheet):
     temp = delete(temp,(-1),axis=1)
     temp = delete(temp,(-1),axis=1)
     return temp
-
+""" MAIN LOOP
+"""
 def main():
-    """ Retrieves data from the google sheet and checks if a request has been made
-    """
     #Setup to read/write to sheet using gspread#
     credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-e401bb1cb11e.json', scope)
     gs = gspread.authorize(credentials)
@@ -215,25 +238,36 @@ def main():
     count = 0
 
     #Initiate ML Models#
+    print("Start Building Neural Networks")
     prediction_models = init_models(worksheet)
-    while True:       
-        if (worksheet.acell('AF1').value == '1'):
-            temp = get_data(worksheet)
-            #Gets which users need updating#
+
+    print ("Neural Networks Have Been Constructed")
+    print ("Starting Server...")
+
+    #Runs Forever#
+    while True:    
+        if (worksheet.acell('AF1').value == '1'): #Checks global request cell
+            print("Request Detected! Predicting Locations!")
+            temp = get_data(worksheet) #gets the user data
+            #Gets which users need updating, incase multiple requests have been made#
             i = 0
             request_log = []
             for val in temp[:, -1]:
                 if val == '1': #request detected
                     request_log.append(i)
                 i+=1
+            #updates each user#
             for num in request_log:
                 update_recommendation(prediction_models, temp[num], num, worksheet)
-
-            #time.sleep() #sleeps so a check is made every ~15 seconds
-
         #Keeps Track of iterations/check if server still alive
         print("Iteration = ", count)
+        time.sleep(1) #delay so check only happens every second
         count+=1
-
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
