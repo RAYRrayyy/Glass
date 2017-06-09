@@ -5,7 +5,9 @@ from numpy import *
 from oauth2client.service_account import ServiceAccountCredentials
 from keras.models import Sequential
 from keras.layers import Dense
+
 scope = ['https://spreadsheets.google.com/feeds']
+accuracy_list = []
 """ Class which is used for building of Neural Networks
     Remove instances where user has not visited a location (0)
     Reduces possible Bias in training the Neural Networks
@@ -54,6 +56,8 @@ class location_learner:
         Output: The final prediction neural network
     """   
     def train_model(self, data):
+        print(self.location_number)
+
         self.data = data
         self.temp = self.process_data(self.data,self.location_number-1)
         self.output_Y = copy(self.temp[:,[self.location_number-1]])
@@ -62,6 +66,7 @@ class location_learner:
         self.scores = self.model.evaluate(self.train_X, self.output_Y)
         self.prediction_model = self.model
         print("\n%s: %.2f%%" % (self.model.metrics_names[1], self.scores[1]*100))
+        accuracy_list.append(self.scores[1]*100)
         return self.model
 """Processes row data for prediction querying data
    Inputs: row - Current User's Preferences
@@ -100,7 +105,7 @@ def update_recommendation(prediction_models, temp, num, worksheet):
     current_location = row[-2] - 1
     recommendation_list = []
     #Query all 27 location#
-    for location in range(0,26):
+    for location in range(0,27):
         #Checks if location is unvisited#
         if row[location] == 0:
             #Builds query data#
@@ -213,7 +218,7 @@ def init_models(worksheet):
     model_array.append(model_twentyseven)
 
     #TRAINS ALL THE LOCATION MODELS#
-    for k in range(0,26):
+    for k in range(0,27):
         prediction_models.append(model_array[k].train_model(temp))
     return prediction_models
 """Retrieves and stores data from Database
@@ -242,6 +247,7 @@ def main():
     prediction_models = init_models(worksheet)
 
     print ("Neural Networks Have Been Constructed")
+    print("Accuracy List: ", accuracy_list)
     print ("Starting Server...")
 
     #Runs Forever#
